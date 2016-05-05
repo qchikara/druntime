@@ -621,12 +621,19 @@ alias CERT_USAGE_MATCH* PCERT_USAGE_MATCH;
 struct CERT_CHAIN_PARA {
     DWORD            cbSize = CERT_CHAIN_PARA.sizeof;
     CERT_USAGE_MATCH RequestedUsage;
-//#if CERT_CHAIN_PARA_HAS_EXTRA_FIELDS
-    CERT_USAGE_MATCH RequestedIssuancePolicy;
-    DWORD            dwUrlRetrievalTimeout;
-    BOOL             fCheckRevocationFreshnessTime;
-    DWORD            dwRevocationFreshnessTime;
-//#endif
+    version (CERT_CHAIN_PARA_HAS_EXTRA_FIELDS) { // You should define if needed.
+        CERT_USAGE_MATCH RequestedIssuancePolicy;
+        DWORD            dwUrlRetrievalTimeout;
+        BOOL             fCheckRevocationFreshnessTime;
+        DWORD            dwRevocationFreshnessTime;
+        static if (_WIN32_WINNT >= 0x600) {
+            LPFILETIME              pftCacheResync;
+        }
+        static if (_WIN32_WINNT >= 0x602) {
+            PCCERT_STRONG_SIGN_PARA pStrongSignPara;
+            DWORD                   dwStrongSignFlags;
+        }
+    }
 }
 alias CERT_CHAIN_PARA* PCERT_CHAIN_PARA;
 
@@ -642,8 +649,10 @@ struct CERT_CHAIN_FIND_BY_ISSUER_PARA {
     CERT_NAME_BLOB* rgIssuer;
     PFN_CERT_CHAIN_FIND_BY_ISSUER_CALLBACK pfnFIndCallback;
     void*  pvFindArg;
-    DWORD* pdwIssuerChainIndex;
-    DWORD* pdwIssuerElementIndex;
+    version (CERT_CHAIN_FIND_BY_ISSUER_PARA_HAS_EXTRA_FIELDS) { // You should define if needed.
+        DWORD* pdwIssuerChainIndex;
+        DWORD* pdwIssuerElementIndex;
+    }
 }
 alias CERT_CHAIN_FIND_BY_ISSUER_PARA* PCERT_CHAIN_FIND_BY_ISSUER_PARA;
 /* #endif */
