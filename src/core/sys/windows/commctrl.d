@@ -1305,7 +1305,8 @@ static if (_WIN32_IE >= 0x300) {
     static if (_WIN32_WINNT >= 0x501) {
         enum {
             LVBKIF_FLAG_TILEOFFSET = 0x00000100,
-            LVBKIF_TYPE_WATERMARK  = 0x10000000
+            LVBKIF_TYPE_WATERMARK  = 0x10000000,
+            LVBKIF_FLAG_ALPHABLEND = 0x20000000
         }
     }
 
@@ -1672,6 +1673,60 @@ static if (_WIN32_IE >= 0x400) {
         LVGIT_UNFOLDED   = 1
     }
 }
+
+static if (_WIN32_WINNT >= 0x501) {
+    enum {
+        LVGF_NONE           = 0x00000000,
+        LVGF_HEADER         = 0x00000001,
+        LVGF_FOOTER         = 0x00000002,
+        LVGF_STATE          = 0x00000004,
+        LVGF_ALIGN          = 0x00000008,
+        LVGF_GROUPID        = 0x00000010
+    }
+}
+static if (_WIN32_WINNT >= 0x600) {
+    enum {
+        LVGF_SUBTITLE           = 0x00000100,
+        LVGF_TASK               = 0x00000200,
+        LVGF_DESCRIPTIONTOP     = 0x00000400,
+        LVGF_DESCRIPTIONBOTTOM  = 0x00000800,
+        LVGF_TITLEIMAGE         = 0x00001000,
+        LVGF_EXTENDEDIMAGE      = 0x00002000,
+        LVGF_ITEMS              = 0x00004000,
+        LVGF_SUBSET             = 0x00008000,
+        LVGF_SUBSETITEMS        = 0x00010000
+    }
+}
+
+static if (_WIN32_WINNT >= 0x501) {
+    enum {
+        LVGS_NORMAL             = 0x00000000,
+        LVGS_COLLAPSED          = 0x00000001,
+        LVGS_HIDDEN             = 0x00000002
+    }
+}
+static if (_WIN32_WINNT >= 0x600) {
+    enum {
+        LVGS_NOHEADER           = 0x00000004,
+        LVGS_COLLAPSIBLE        = 0x00000008,
+        LVGS_FOCUSED            = 0x00000010,
+        LVGS_SELECTED           = 0x00000020,
+        LVGS_SUBSETED           = 0x00000040,
+        LVGS_SUBSETLINKFOCUSED  = 0x00000080
+    }
+}
+
+static if (_WIN32_WINNT >= 0x501) {
+    enum {
+        LVGA_HEADER_LEFT    = 0x00000001,
+        LVGA_HEADER_CENTER  = 0x00000002,
+        LVGA_HEADER_RIGHT   = 0x00000004,
+        LVGA_FOOTER_LEFT    = 0x00000008,
+        LVGA_FOOTER_CENTER  = 0x00000010,
+        LVGA_FOOTER_RIGHT   = 0x00000020
+    }
+}
+
 
 enum {
     TVS_HASBUTTONS      = 1,
@@ -3265,18 +3320,22 @@ struct NMCUSTOMDRAW {
 }
 alias NMCUSTOMDRAW* LPNMCUSTOMDRAW;
 
-static if (_WIN32_IE >= 0x400) {
-    struct NMLVCUSTOMDRAW {
-        NMCUSTOMDRAW nmcd;
-        COLORREF     clrText;
-        COLORREF     clrTextBk;
-        int          iSubItem;
+struct NMLVCUSTOMDRAW {
+    NMCUSTOMDRAW nmcd;
+    COLORREF     clrText;
+    COLORREF     clrTextBk;
+    static if (_WIN32_IE >= 0x400) {
+        int     iSubItem;
     }
-} else {
-    struct NMLVCUSTOMDRAW {
-        NMCUSTOMDRAW nmcd;
-        COLORREF     clrText;
-        COLORREF     clrTextBk;
+    static if (_WIN32_IE >= 0x560) {
+        DWORD   dwItemType;
+        COLORREF clrFace;
+        int     iIconEffect;
+        int     iIconPhase;
+        int     iPartId;
+        int     iStateId;
+        RECT    rcText;
+        UINT    uAlign;
     }
 }
 alias NMLVCUSTOMDRAW* LPNMLVCUSTOMDRAW;
@@ -3622,6 +3681,10 @@ static if (_WIN32_WINNT >= 0x501) {
         int    iGroupId;
         UINT   cColumns;
         PUINT  puColumns;
+        static if (_WIN32_WINNT >= 0x600) {
+            int* piColFmt;
+            int iGroup;
+        }
     }
 
     struct LVITEMW {
@@ -3638,6 +3701,10 @@ static if (_WIN32_WINNT >= 0x501) {
         int    iGroupId;
         UINT   cColumns;
         PUINT  puColumns;
+        static if (_WIN32_WINNT >= 0x600) {
+            int* piColFmt;
+            int iGroup;
+        }
     }
 } else static if (_WIN32_IE >= 0x300) {
     struct LVITEMA {
@@ -3737,6 +3804,9 @@ static if (_WIN32_IE >= 0x300) {
         UINT  flags;
         int   iItem;
         int   iSubItem;
+        static if (_WIN32_WINNT >= 0x600) {
+            int iGroup;
+        }
     }
 } else {
     struct LVHITTESTINFO {
@@ -3758,6 +3828,11 @@ static if (_WIN32_IE >= 0x300) {
         int   iSubItem;
         int   iImage;
         int   iOrder;
+        static if (_WIN32_WINNT >= 0x600) {
+            int cxMin;
+            int cxDefault;
+            int cxIdeal;
+        }
     }
     struct LVCOLUMNW {
         UINT   mask;
@@ -3768,6 +3843,11 @@ static if (_WIN32_IE >= 0x300) {
         int    iSubItem;
         int    iImage;
         int    iOrder;
+        static if (_WIN32_WINNT >= 0x600) {
+            int cxMin;
+            int cxDefault;
+            int cxIdeal;
+        }
     }
 } else {
     struct LVCOLUMNA {
