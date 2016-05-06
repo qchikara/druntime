@@ -895,7 +895,12 @@ struct SP_ALTPLATFORM_INFO {
     DWORD MajorVersion;
     DWORD MinorVersion;
     WORD  ProcessorArchitecture;
-    WORD  Reserved;
+    // SP_ALTPLATFORM_INFO_V2 fields
+    WORD  Flags; // formerly Reserved;
+    static if (_WIN32_WINNT >= 0x501) {
+        DWORD FirstValidatedMajorVersion;
+        DWORD FirstValidatedMinorVersion;
+    }
 }
 alias SP_ALTPLATFORM_INFO* PSP_ALTPLATFORM_INFO;
 
@@ -1358,6 +1363,9 @@ struct SP_BACKUP_QUEUE_PARAMS_A {
     DWORD cbSize = SP_BACKUP_QUEUE_PARAMS_A.sizeof;
     CHAR[MAX_PATH] FullInfPath;
     INT FilenameOffset;
+    static if (_WIN32_WINNT > 0x500) {
+    CHAR[MAX_PATH] ReinstallInstance;
+    }
 }
 alias SP_BACKUP_QUEUE_PARAMS_A* PSP_BACKUP_QUEUE_PARAMS_A;
 
@@ -1365,6 +1373,9 @@ struct SP_BACKUP_QUEUE_PARAMS_W {
     DWORD cbSize = SP_BACKUP_QUEUE_PARAMS_W.sizeof;
     WCHAR[MAX_PATH] FullInfPath;
     INT FilenameOffset;
+    static if (_WIN32_WINNT > 0x500) {
+    WCHAR[MAX_PATH] ReinstallInstance;
+    }
 }
 alias SP_BACKUP_QUEUE_PARAMS_W* PSP_BACKUP_QUEUE_PARAMS_W;
 
