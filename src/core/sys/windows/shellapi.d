@@ -226,6 +226,9 @@ struct NOTIFYICONDATAA {
     static if (_WIN32_IE >= 0x600) {
         GUID      guidItem;
     }
+    static if (_WIN32_WINNT >= 0x600) {
+        HICON hBalloonIcon;
+    }
 }
 alias NOTIFYICONDATAA* PNOTIFYICONDATAA;
 
@@ -252,6 +255,9 @@ struct NOTIFYICONDATAW {
     }
     static if (_WIN32_IE >= 0x600) {
         GUID guidItem;
+    }
+    static if (_WIN32_WINNT >= 0x600) {
+        HICON hBalloonIcon;
     }
 }
 alias NOTIFYICONDATAW* PNOTIFYICONDATAW;
