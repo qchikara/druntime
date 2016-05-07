@@ -3286,7 +3286,7 @@ struct IMAGE_RESOURCE_DATA_ENTRY {
 alias IMAGE_RESOURCE_DATA_ENTRY* PIMAGE_RESOURCE_DATA_ENTRY;
 
 struct IMAGE_LOAD_CONFIG_DIRECTORY32 {
-    DWORD    Characteristics;
+    DWORD    Size;
     DWORD    TimeDateStamp;
     WORD     MajorVersion;
     WORD     MinorVersion;
@@ -3295,16 +3295,32 @@ struct IMAGE_LOAD_CONFIG_DIRECTORY32 {
     DWORD    CriticalSectionDefaultTimeout;
     DWORD    DeCommitFreeBlockThreshold;
     DWORD    DeCommitTotalFreeThreshold;
-    PVOID    LockPrefixTable;
+    DWORD    LockPrefixTable; // VA
     DWORD    MaximumAllocationSize;
     DWORD    VirtualMemoryThreshold;
     DWORD    ProcessHeapFlags;
-    DWORD[4] Reserved;
+    //DWORD[4] Reserved;
+    DWORD   ProcessAffinityMask;
+    WORD    CSDVersion;
+    WORD    Reserved1;
+    DWORD   EditList;                       // VA
+    DWORD   SecurityCookie;                 // VA
+    static if (_WIN32_WINNT >= 0x600) {
+        DWORD   SEHandlerTable;                 // VA
+        DWORD   SEHandlerCount;
+    }
+    static if (_WIN32_WINNT > 0x601) {
+        DWORD   GuardCFCheckFunctionPointer;    // VA
+        DWORD   Reserved2;
+        DWORD   GuardCFFunctionTable;           // VA
+        DWORD   GuardCFFunctionCount;
+        DWORD   GuardFlags;
+    }
 }
 alias IMAGE_LOAD_CONFIG_DIRECTORY32* PIMAGE_LOAD_CONFIG_DIRECTORY32;
 
 struct IMAGE_LOAD_CONFIG_DIRECTORY64 {
-    DWORD     Characteristics;
+    DWORD     Size;
     DWORD     TimeDateStamp;
     WORD      MajorVersion;
     WORD      MinorVersion;
@@ -3313,7 +3329,7 @@ struct IMAGE_LOAD_CONFIG_DIRECTORY64 {
     DWORD     CriticalSectionDefaultTimeout;
     ULONGLONG DeCommitFreeBlockThreshold;
     ULONGLONG DeCommitTotalFreeThreshold;
-    ULONGLONG LockPrefixTable;
+    ULONGLONG LockPrefixTable;              // VA
     ULONGLONG MaximumAllocationSize;
     ULONGLONG VirtualMemoryThreshold;
     ULONGLONG ProcessAffinityMask;
@@ -3321,7 +3337,19 @@ struct IMAGE_LOAD_CONFIG_DIRECTORY64 {
     WORD      CSDFlags;
     WORD      Reserved1;
     ULONGLONG EditList;
-    DWORD[2]  Reserved;
+    //DWORD[2]  Reserved;
+    ULONGLONG  SecurityCookie;              // VA
+    static if (_WIN32_WINNT >= 0x600) {
+        ULONGLONG  SEHandlerTable;              // VA
+        ULONGLONG  SEHandlerCount;
+    }
+    static if (_WIN32_WINNT > 0x601) {
+        ULONGLONG  GuardCFCheckFunctionPointer; // VA
+        ULONGLONG  Reserved2;
+        ULONGLONG  GuardCFFunctionTable;        // VA
+        ULONGLONG  GuardCFFunctionCount;
+        DWORD      GuardFlags;
+    }
 }
 alias IMAGE_LOAD_CONFIG_DIRECTORY64* PIMAGE_LOAD_CONFIG_DIRECTORY64;
 
@@ -4039,6 +4067,7 @@ static if (_WIN32_WINNT >= 0x501) {
         PCWSTR        lpAssemblyManifestPath;
         PCWSTR        lpAssemblyPolicyPath;
         PCWSTR        lpAssemblyDirectoryName;
+        DWORD         ulFileCount; // undocumented?
     }
     alias ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION*
       PACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION;
