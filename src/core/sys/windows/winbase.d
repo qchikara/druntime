@@ -1552,6 +1552,16 @@ static if (_WIN32_WINNT >= 0x501) {
     alias ACTCTXW*        PACTCTXW;
     alias const(ACTCTXW)* PCACTCTXW;
 
+    struct ACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA {
+        PVOID lpInformation;
+        PVOID lpSectionBase;
+        ULONG ulSectionLength;
+        PVOID lpSectionGlobalDataBase;
+        ULONG ulSectionGlobalDataLength;
+    }
+    alias ACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA* PACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA;
+    alias const(ACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA)* PCACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA;
+
     struct ACTCTX_SECTION_KEYED_DATA {
         ULONG cbSize = this.sizeof;
         ULONG ulDataFormatVersion;
@@ -1562,7 +1572,10 @@ static if (_WIN32_WINNT >= 0x501) {
         PVOID lpSectionBase;
         ULONG ulSectionTotalLength;
         HANDLE hActCtx;
-        HANDLE ulAssemblyRosterIndex;
+        ULONG ulAssemblyRosterIndex;
+    // 2600 stops here
+        ULONG ulFlags;
+        ACTCTX_SECTION_KEYED_DATA_ASSEMBLY_METADATA AssemblyMetadata;
     }
     alias ACTCTX_SECTION_KEYED_DATA*        PACTCTX_SECTION_KEYED_DATA;
     alias const(ACTCTX_SECTION_KEYED_DATA)* PCACTCTX_SECTION_KEYED_DATA;
