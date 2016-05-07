@@ -180,10 +180,10 @@ struct MIDL_STUB_MESSAGE {
     ubyte *PointerBufferMark;
     ubyte fBufferValid;
     ubyte Unused;
-    uint MaxCount;
+    ULONG_PTR MaxCount;
     uint Offset;
     uint ActualCount;
-    void* function (uint) pfnAllocate;
+    void* function (size_t) pfnAllocate;
     void function (void*) pfnFree;
     ubyte * StackTop;
     ubyte * pPresentedType;
@@ -194,7 +194,7 @@ const(_MIDL_STUB_DESC)* StubDesc;
     uint FullPtrRefId;
     int fCheckBounds;
     // FIXME:
-    byte bit_fields_for_D; // FIXME: Bitfields
+    private DWORD bit_fields_for_D; // FIXME: Bitfields
 //  int fInDontFree :1;
 //  int fDontCallFreeInst :1;
 //  int fInOnlyParam :1;
@@ -210,7 +210,7 @@ const(_MIDL_STUB_DESC)* StubDesc;
     uint * SizePtrLengthArray;
     void* pArgQueue;
     uint dwStubPhase;
-    uint[5] w2kReserved;
+    INT_PTR[5] w2kReserved;
 }
 alias MIDL_STUB_MESSAGE * PMIDL_STUB_MESSAGE;
 
@@ -337,7 +337,7 @@ alias MIDL_STUBLESS_PROXY_INFO *PMIDL_STUBLESS_PROXY_INFO;
 
 union CLIENT_CALL_RETURN {
     void *Pointer;
-    int Simple;
+    LONG_PTR Simple;
 }
 
 enum XLAT_SIDE {
