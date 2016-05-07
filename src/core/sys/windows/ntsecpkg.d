@@ -11,6 +11,7 @@ module core.sys.windows.ntsecpkg;
 version (Windows):
 
 import core.sys.windows.windef, core.sys.windows.ntsecapi, core.sys.windows.security, core.sys.windows.ntdef, core.sys.windows.sspi;
+import core.sys.windows.w32api;
 import core.sys.windows.basetyps : GUID;
 import core.sys.windows.winbase;
 
@@ -132,6 +133,13 @@ struct SECPKG_CLIENT_INFO {
   BOOLEAN HasTcbPrivilege;
   BOOLEAN Impersonating;
   BOOLEAN Restricted;
+  static if (_WIN32_WINNT >= 0x501) {
+    UCHAR ClientFlags;
+    SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+  }
+  static if (_WIN32_WINNT >= 0x600) {
+    HANDLE ClientToken;
+  }
 }
 alias SECPKG_CLIENT_INFO* PSECPKG_CLIENT_INFO;
 struct SECURITY_USER_DATA {
@@ -161,14 +169,45 @@ struct SECPKG_CALL_INFO {
     ULONG ThreadId;
     ULONG Attributes;
     ULONG CallCount;
+    PVOID MechOid; // mechanism objection identifer
 }
 alias SECPKG_CALL_INFO* PSECPKG_CALL_INFO;
+
+struct SECPKG_WOW_CLIENT_DLL {
+    SECURITY_STRING WowClientDllPath;
+}
+alias SECPKG_WOW_CLIENT_DLL * PSECPKG_WOW_CLIENT_DLL;
+
+enum SECPKG_MAX_OID_LENGTH  = 32;
+
+struct SECPKG_SERIALIZED_OID {
+    ULONG OidLength;
+    ULONG OidAttributes;
+    UCHAR[ SECPKG_MAX_OID_LENGTH ] OidValue;
+}
+alias SECPKG_SERIALIZED_OID * PSECPKG_SERIALIZED_OID;
+
+struct SECPKG_EXTRA_OIDS {
+    ULONG   OidCount;
+    SECPKG_SERIALIZED_OID[ 1 ] Oids;
+}
+alias SECPKG_EXTRA_OIDS * PSECPKG_EXTRA_OIDS;
+
+struct SECPKG_NEGO2_INFO {
+    UCHAR[16] AuthScheme; // auth id
+    ULONG PackageFlags;
+}
+alias SECPKG_NEGO2_INFO * PSECPKG_NEGO2_INFO;
+
 struct SECPKG_EXTENDED_INFORMATION {
     SECPKG_EXTENDED_INFORMATION_CLASS Class;
     union _Info{
         SECPKG_GSS_INFO GssInfo;
         SECPKG_CONTEXT_THUNKS ContextThunks;
         SECPKG_MUTUAL_AUTH_LEVEL MutualAuthLevel;
+        SECPKG_WOW_CLIENT_DLL    WowClientDll;
+        SECPKG_EXTRA_OIDS        ExtraOids;
+        SECPKG_NEGO2_INFO        Nego2Info;
     }
     _Info Info;
 }
@@ -254,10 +293,15 @@ alias NTSTATUS function(PUNICODE_STRING, PVOID,
  PVOID, ULONG, PVOID*, PULONG, PNTSTATUS) PLSA_CALL_PACKAGE_PASSTHROUGH;
 
 /* Dispatch tables of functions used by SSP/AP */
+alias PVOID function(ULONG PackgeId) LSA_LOCATE_PKG_BY_ID;
+
+alias LSA_LOCATE_PKG_BY_ID * PLSA_LOCATE_PKG_BY_ID;
+
 struct SECPKG_DLL_FUNCTIONS {
     PLSA_ALLOCATE_LSA_HEAP AllocateHeap;
     PLSA_FREE_LSA_HEAP FreeHeap;
     PLSA_REGISTER_CALLBACK RegisterCallback;
+    PLSA_LOCATE_PKG_BY_ID LocatePackageById;
 }
 alias SECPKG_DLL_FUNCTIONS* PSECPKG_DLL_FUNCTIONS;
 struct LSA_DISPATCH_TABLE {
