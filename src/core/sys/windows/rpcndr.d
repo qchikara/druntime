@@ -319,12 +319,28 @@ struct MIDL_FORMAT_STRING {
     ubyte[1] Format;
 }
 
+struct MIDL_SYNTAX_INFO
+{
+    RPC_SYNTAX_IDENTIFIER TransferSyntax;
+    RPC_DISPATCH_TABLE* DispatchTable;
+    PFORMAT_STRING ProcString;
+    const(ushort)* FmtStringOffset;
+    PFORMAT_STRING TypeString;
+    const(void)* aUserMarshalQuadruple;
+    ULONG_PTR pReserved1;
+    ULONG_PTR pReserved2;
+}
+alias MIDL_SYNTAX_INFO* PMIDL_SYNTAX_INFO;
+
 struct MIDL_SERVER_INFO {
     PMIDL_STUB_DESC pStubDesc;
 const(SERVER_ROUTINE)* DispatchTable;
     PFORMAT_STRING ProcString;
 const(ushort)* FmtStringOffset;
 const(STUB_THUNK)* ThunkTable;
+    PRPC_SYNTAX_IDENTIFIER pTransferSyntax;
+    ULONG_PTR              nCount;
+    PMIDL_SYNTAX_INFO      pSyntaxInfo;
 }
 alias MIDL_SERVER_INFO * PMIDL_SERVER_INFO;
 
@@ -332,6 +348,9 @@ struct MIDL_STUBLESS_PROXY_INFO {
     PMIDL_STUB_DESC pStubDesc;
     PFORMAT_STRING ProcFormatString;
 const(ushort)* FormatStringOffset;
+    PRPC_SYNTAX_IDENTIFIER pTransferSyntax;
+    ULONG_PTR              nCount;
+    PMIDL_SYNTAX_INFO      pSyntaxInfo;
 }
 alias MIDL_STUBLESS_PROXY_INFO *PMIDL_STUBLESS_PROXY_INFO;
 
