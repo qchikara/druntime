@@ -29,6 +29,7 @@ enum RAS_MaxX25Address = 200;
 enum RAS_MaxFacilities = 200;
 enum RAS_MaxUserData = 200;
 enum RAS_MaxReplyMessage = 1024;
+enum RAS_MaxDnsSuffix = 256;
 
 enum RDEOPT_UsePrefixSuffix           = 0x00000001;
 enum RDEOPT_PausedStates              = 0x00000002;
@@ -246,6 +247,9 @@ align(4):
         DWORD dwFlags;
         LUID luid;
     }
+    static if (_WIN32_WINNT >= 0x600) {
+        GUID     guidCorrelationId;
+    }
 }
 alias RASCONNW* LPRASCONNW;
 
@@ -269,8 +273,41 @@ align(4):
         DWORD dwFlags;
         LUID luid;
     }
+    static if (_WIN32_WINNT >= 0x600) {
+        GUID     guidCorrelationId;
+    }
 }
 alias RASCONNA* LPRASCONNA;
+
+static if (_WIN32_WINNT >= 0x601) {
+
+enum RASTUNNELENDPOINT_UNKNOWN      = 0;
+enum RASTUNNELENDPOINT_IPv4         = 1;
+enum RASTUNNELENDPOINT_IPv6         = 2;
+
+struct RASTUNNELENDPOINT
+{
+    DWORD dwType;
+    union {
+        UCHAR[16]       Byte;
+        //RASIPV4ADDR ipv4;
+        //RASIPV6ADDR ipv6;
+    }
+}
+}
+static if (_WIN32_WINNT >= 0x601) {
+    enum RASCSS_DONE =     0x2000;
+
+    enum RASCONNSUBSTATE
+    {
+        RASCSS_None = 0,
+        RASCSS_Dormant,
+        RASCSS_Reconnecting,
+        RASCSS_Reconnected = RASCSS_DONE,
+    }
+    
+    alias RASCONNSUBSTATE* LPRASCONNSUBSTATE;
+}
 
 struct RASCONNSTATUSW {
     DWORD dwSize;
@@ -280,6 +317,11 @@ struct RASCONNSTATUSW {
     WCHAR[RAS_MaxDeviceName + 1] szDeviceName;
     static if (_WIN32_WINNT >= 0x401) {
         WCHAR[RAS_MaxPhoneNumber + 1] szPhoneNumber;
+    }
+    static if (_WIN32_WINNT >= 0x601) {
+        RASTUNNELENDPOINT localEndPoint;
+        RASTUNNELENDPOINT remoteEndPoint;
+        RASCONNSUBSTATE   rasconnsubstate;
     }
 }
 alias RASCONNSTATUSW* LPRASCONNSTATUSW;
@@ -292,6 +334,11 @@ struct RASCONNSTATUSA {
     CHAR[RAS_MaxDeviceName + 1] szDeviceName;
     static if (_WIN32_WINNT >= 0x401) {
         CHAR[RAS_MaxPhoneNumber + 1] szPhoneNumber;
+    }
+    static if (_WIN32_WINNT >= 0x601) {
+        RASTUNNELENDPOINT localEndPoint;
+        RASTUNNELENDPOINT remoteEndPoint;
+        RASCONNSUBSTATE   rasconnsubstate;
     }
 }
 alias RASCONNSTATUSA* LPRASCONNSTATUSA;
@@ -311,6 +358,12 @@ align {
         DWORD dwSubEntry;
         ULONG_PTR dwCallbackId;
     }
+    static if (_WIN32_WINNT >= 0x601) {
+        DWORD dwIfIndex;
+    }
+    static if (_WIN32_WINNT >= 0x602) {
+        LPWSTR szEncPassword;
+    }
 }
 alias RASDIALPARAMSW* LPRASDIALPARAMSW;
 
@@ -329,6 +382,12 @@ align {
         DWORD dwSubEntry;
         ULONG_PTR dwCallbackId;
     }
+    static if (_WIN32_WINNT >= 0x601) {
+        DWORD dwIfIndex;
+    }
+    static if (_WIN32_WINNT >= 0x602) {
+        LPSTR szEncPassword;
+    }
 }
 alias RASDIALPARAMSA* LPRASDIALPARAMSA;
 
@@ -340,6 +399,15 @@ alias RASDIALPARAMSA* LPRASDIALPARAMSA;
     }
 //}
 
+static if (_WIN32_WINNT >= 0x601) {
+    struct RASDEVSPECIFICINFO {
+    align(4):
+        DWORD   dwSize;
+        BYTE   *pbDevSpecificInfo;
+    }
+    alias RASDEVSPECIFICINFO* PRASDEVSPECIFICINFO;
+}
+
 struct RASDIALEXTENSIONS {
 align(4):
     DWORD dwSize;
@@ -350,6 +418,10 @@ align(4):
         ULONG_PTR reserved1;
         RASEAPINFO RasEapInfo;
     //}
+    static if (_WIN32_WINNT >= 0x601) {
+        BOOL                fSkipPppAuth;
+        RASDEVSPECIFICINFO  RasDevSpecificInfo;
+    }
 }
 alias RASDIALEXTENSIONS* LPRASDIALEXTENSIONS;
 
@@ -557,6 +629,7 @@ private union in6_addr
 
     alias s6_addr = s6_addr8;
 }
+
 alias in6_addr RASIPV6ADDR;
 
 struct RASENTRYW {
@@ -604,6 +677,27 @@ struct RASENTRYW {
         WCHAR[MAX_PATH] szCustomDialDll;
         DWORD dwVpnStrategy;
     //}
+    static if (_WIN32_WINNT >= 0x501) {
+    DWORD       dwfOptions2;
+    DWORD       dwfOptions3;
+    WCHAR[RAS_MaxDnsSuffix]       szDnsSuffix;
+    DWORD       dwTcpWindowSize;
+    WCHAR[MAX_PATH]       szPrerequisitePbk;
+    WCHAR[RAS_MaxEntryName + 1]       szPrerequisiteEntry;
+    DWORD       dwRedialCount;
+    DWORD       dwRedialPause;
+    }
+    static if (_WIN32_WINNT >= 0x600) {
+    RASIPV6ADDR   ipv6addrDns;
+    RASIPV6ADDR   ipv6addrDnsAlt;
+    DWORD         dwIPv4InterfaceMetric;
+    DWORD         dwIPv6InterfaceMetric;
+    }
+    static if (_WIN32_WINNT >= 0x601) {
+    RASIPV6ADDR   ipv6addr;
+    DWORD         dwIPv6PrefixLength;
+    DWORD         dwNetworkOutageTime;
+    }
 }
 alias RASENTRYW* LPRASENTRYW;
 
@@ -652,6 +746,27 @@ struct RASENTRYA {
         CHAR[MAX_PATH] szCustomDialDll;
         DWORD dwVpnStrategy;
     //}
+    static if (_WIN32_WINNT >= 0x501) {
+    DWORD       dwfOptions2;
+    DWORD       dwfOptions3;
+    CHAR[RAS_MaxDnsSuffix]       szDnsSuffix;
+    DWORD       dwTcpWindowSize;
+    CHAR[MAX_PATH]       szPrerequisitePbk;
+    CHAR[RAS_MaxEntryName + 1]       szPrerequisiteEntry;
+    DWORD       dwRedialCount;
+    DWORD       dwRedialPause;
+    }
+    static if (_WIN32_WINNT >= 0x600) {
+    RASIPV6ADDR   ipv6addrDns;
+    RASIPV6ADDR   ipv6addrDnsAlt;
+    DWORD         dwIPv4InterfaceMetric;
+    DWORD         dwIPv6InterfaceMetric;
+    }
+    static if (_WIN32_WINNT >= 0x601) {
+    RASIPV6ADDR   ipv6addr;
+    DWORD         dwIPv6PrefixLength;
+    DWORD         dwNetworkOutageTime;
+    }
 }
 alias RASENTRYA* LPRASENTRYA;
 
