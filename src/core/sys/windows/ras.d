@@ -540,6 +540,25 @@ struct RASIPADDR {
     BYTE d;
 }
 
+// temporary
+private union in6_addr
+{
+    private union _in6_u_t
+    {
+        ubyte[16] u6_addr8;
+        ushort[8] u6_addr16;
+        uint[4] u6_addr32;
+    }
+    _in6_u_t in6_u;
+
+    ubyte[16] s6_addr8;
+    ushort[8] s6_addr16;
+    uint[4] s6_addr32;
+
+    alias s6_addr = s6_addr8;
+}
+alias in6_addr RASIPV6ADDR;
+
 struct RASENTRYW {
     DWORD dwSize;
     DWORD dwfOptions;
