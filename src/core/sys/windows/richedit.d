@@ -310,6 +310,7 @@ enum UID_CUT        = 4;
 enum UID_PASTE      = 5;
 
 struct CHARFORMATA {
+//align(4):
     UINT cbSize = this.sizeof;
     DWORD dwMask;
     DWORD dwEffects;
@@ -321,6 +322,7 @@ struct CHARFORMATA {
     char[LF_FACESIZE] szFaceName;
 }
 struct CHARFORMATW {
+//align(4):
     UINT cbSize = this.sizeof;
     DWORD dwMask;
     DWORD dwEffects;
@@ -333,6 +335,7 @@ struct CHARFORMATW {
 }
 
 struct CHARFORMAT2A {
+//align(4):
     UINT cbSize = this.sizeof;
     DWORD dwMask;
     DWORD dwEffects;
@@ -355,6 +358,7 @@ struct CHARFORMAT2A {
 }
 
 struct CHARFORMAT2W {
+//align(4):
     UINT cbSize = this.sizeof;
     DWORD dwMask;
     DWORD dwEffects;
@@ -377,11 +381,13 @@ struct CHARFORMAT2W {
 }
 
 struct CHARRANGE {
+//align(4):
     LONG cpMin;
     LONG cpMax;
 }
 
 struct COMPCOLOR {
+align(4):
     COLORREF crText;
     COLORREF crBackground;
     DWORD dwEffects;
@@ -392,18 +398,21 @@ extern (Windows) {
 }
 
 struct EDITSTREAM {
+align(4):
     DWORD_PTR dwCookie;
     DWORD dwError;
     EDITSTREAMCALLBACK pfnCallback;
 }
 
 struct ENCORRECTTEXT {
+align(4):
     NMHDR nmhdr;
     CHARRANGE chrg;
     WORD seltyp;
 }
 
 struct ENDROPFILES {
+align(4):
     NMHDR nmhdr;
     HANDLE hDrop;
     LONG cp;
@@ -411,6 +420,7 @@ struct ENDROPFILES {
 }
 
 struct ENLINK {
+align(4):
     NMHDR nmhdr;
     UINT msg;
     WPARAM wParam;
@@ -419,6 +429,7 @@ struct ENLINK {
 }
 
 struct ENOLEOPFAILED {
+align(4):
     NMHDR nmhdr;
     LONG iob;
     LONG lOper;
@@ -426,6 +437,7 @@ struct ENOLEOPFAILED {
 }
 
 struct ENPROTECTED {
+align(4):
     NMHDR nmhdr;
     UINT msg;
     WPARAM wParam;
@@ -435,34 +447,40 @@ struct ENPROTECTED {
 alias ENPROTECTED* LPENPROTECTED;
 
 struct ENSAVECLIPBOARD {
+align(4):
     NMHDR nmhdr;
     LONG cObjectCount;
     LONG cch;
 }
 
 struct FINDTEXTA {
+//align(4):
     CHARRANGE chrg;
     LPSTR lpstrText;
 }
 
 struct FINDTEXTW {
+//align(4):
     CHARRANGE chrg;
     LPWSTR lpstrText;
 }
 
 struct FINDTEXTEXA {
+//align(4):
     CHARRANGE chrg;
     LPSTR lpstrText;
     CHARRANGE chrgText;
 }
 
 struct FINDTEXTEXW {
+//align(4):
     CHARRANGE chrg;
     LPWSTR lpstrText;
     CHARRANGE chrgText;
 }
 
 struct FORMATRANGE {
+//align(4):
     HDC hdc;
     HDC hdcTarget;
     RECT rc;
@@ -471,6 +489,7 @@ struct FORMATRANGE {
 }
 
 struct MSGFILTER {
+align(4):
     NMHDR nmhdr;
     UINT msg;
     WPARAM wParam;
@@ -478,6 +497,7 @@ struct MSGFILTER {
 }
 
 struct PARAFORMAT {
+//align(4):
     UINT cbSize = this.sizeof;
     DWORD dwMask;
     WORD wNumbering;
@@ -491,6 +511,7 @@ struct PARAFORMAT {
 }
 
 struct PARAFORMAT2 {
+//align(4):
     UINT cbSize = this.sizeof;
     DWORD dwMask;
     WORD wNumbering;
@@ -518,37 +539,44 @@ struct PARAFORMAT2 {
 }
 
 struct SELCHANGE {
+align(4):
     NMHDR nmhdr;
     CHARRANGE chrg;
     WORD seltyp;
 }
 
 struct TEXTRANGEA {
+//align(4):
     CHARRANGE chrg;
     LPSTR lpstrText;
 }
 
 struct TEXTRANGEW {
+//align(4):
     CHARRANGE chrg;
     LPWSTR lpstrText;
 }
 
 struct REQRESIZE {
+align(4):
     NMHDR nmhdr;
     RECT rc;
 }
 
 struct REPASTESPECIAL {
+align(4):
     DWORD dwAspect;
     DWORD_PTR dwParam;
 }
 
 struct PUNCTUATION {
+align(4):
     UINT iSize;
     LPSTR szPunctuation;
 }
 
 struct GETTEXTEX {
+align(4):
     DWORD cb;
     DWORD flags;
     UINT codepage;
@@ -573,6 +601,7 @@ enum GTL_NUMCHARS = 8;
 enum GTL_NUMBYTES = 16;
 
 struct GETTEXTLENGTHEX {
+//align(4):
     DWORD flags;
     UINT codepage;
 }
