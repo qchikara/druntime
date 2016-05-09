@@ -587,6 +587,7 @@ struct FOLDERSETTINGS {
 alias FOLDERSETTINGS*        LPFOLDERSETTINGS;
 alias const(FOLDERSETTINGS)* LPCFOLDERSETTINGS;
 
+version (none) { // windows 2000 dropped this
 struct FVSHOWINFO {
     DWORD cbSize = this.sizeof;
     HWND hwndOwner;
@@ -597,6 +598,7 @@ struct FVSHOWINFO {
     OLECHAR[MAX_PATH] strNewFile;
 }
 alias FVSHOWINFO* LPFVSHOWINFO;
+}
 
 struct NRESARRAY {
     UINT cItems;
@@ -882,6 +884,7 @@ interface ICopyHook : IUnknown {
 }
 alias ICopyHook LPCOPYHOOK;
 
+version (none) { // Windows 2000 dropped these interfaces
 interface IFileViewerSite : IUnknown {
     HRESULT SetPinnedWindow(HWND);
     HRESULT GetPinnedWindow(HWND*);
@@ -894,6 +897,7 @@ interface IFileViewer : IUnknown {
     HRESULT PrintTo(LPSTR, BOOL);
 }
 alias IFileViewer LPFILEVIEWER;
+}
 
 interface IFileSystemBindData : IUnknown {
     HRESULT SetFindData(const(WIN32_FIND_DATAW)*);
