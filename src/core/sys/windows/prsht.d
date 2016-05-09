@@ -218,6 +218,16 @@ struct PROPSHEETPAGEA {
         LPCSTR pszHeaderTitle;
         LPCSTR pszHeaderSubTitle;
     }
+    static if (_WIN32_WINNT >= 0x501) {
+        HANDLE           hActCtx;
+    }
+    static if (_WIN32_WINNT >= 0x600) {
+        union 
+        {
+            HBITMAP     hbmHeader;
+            LPCWSTR     pszbmHeader;
+        }
+    }
 }
 alias PROPSHEETPAGEA*        LPPROPSHEETPAGEA;
 alias const(PROPSHEETPAGEA)* LPCPROPSHEETPAGEA;
@@ -242,6 +252,16 @@ struct PROPSHEETPAGEW {
     static if (_WIN32_IE >= 0x400) {
         LPCWSTR pszHeaderTitle;
         LPCWSTR pszHeaderSubTitle;
+    }
+    static if (_WIN32_WINNT >= 0x501) {
+        HANDLE           hActCtx;
+    }
+    static if (_WIN32_WINNT >= 0x600) {
+        union 
+        {
+            HBITMAP     hbmHeader;
+            LPCWSTR     pszbmHeader;
+        }
     }
 }
 alias PROPSHEETPAGEW*        LPPROPSHEETPAGEW;

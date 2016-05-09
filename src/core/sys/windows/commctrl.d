@@ -3101,6 +3101,9 @@ static if (_WIN32_IE >= 0x500) {
         int     iOrder;
         UINT    type;
         LPVOID  pvFilter;
+        static if (_WIN32_WINNT >= 0x0600) {
+            UINT       state;
+        }
     }
 
     struct HDITEMW {
@@ -3115,6 +3118,9 @@ static if (_WIN32_IE >= 0x500) {
         int     iOrder;
         UINT    type;
         LPVOID  pvFilter;
+        static if (_WIN32_WINNT >= 0x0600) {
+            UINT       state;
+        }
     }
 } else static if (_WIN32_IE >= 0x300) {
     struct HDITEMA {
@@ -3881,7 +3887,7 @@ static if (_WIN32_WINNT >= 0x501) {
         LPWSTR  pszText;
         int     iItem;
         int     iSubItem;
-        HBITMAP hbmp;
+        //HBITMAP hbmp; // DROPPED - where it came from ?
     }
     alias LVSETINFOTIP* PLVSETINFOTIP;
 
@@ -4019,6 +4025,14 @@ static if (_WIN32_IE >= 0x400) {
         int       cChildren;
         LPARAM    lParam;
         int       iIntegral;
+        static if (_WIN32_IE >= 0x0600) {
+            UINT      uStateEx;
+            HWND      hwnd;
+            int       iExpandedImage;
+        }
+        static if (_WIN32_WINNT >= 0x0601) {
+            int       iReserved;
+        }
     }
     alias TVITEMEXA* LPTVITEMEXA;
 
@@ -4034,6 +4048,14 @@ static if (_WIN32_IE >= 0x400) {
         int       cChildren;
         LPARAM    lParam;
         int       iIntegral;
+        static if (_WIN32_IE >= 0x0600) {
+            UINT      uStateEx;
+            HWND      hwnd;
+            int       iExpandedImage;
+        }
+        static if (_WIN32_WINNT >= 0x0601) {
+            int       iReserved;
+        }
     }
     alias TVITEMEXW* LPTVITEMEXW;
 }
@@ -4266,6 +4288,12 @@ struct MCHITTESTINFO {
     POINT      pt;
     UINT       uHit;
     SYSTEMTIME st;
+    static if (_WIN32_WINNT >= 0x600) {
+        RECT rc;
+        int iOffset;
+        int iRow;
+        int iCol;
+    }
 }
 alias MCHITTESTINFO* PMCHITTESTINFO;
 
@@ -4309,6 +4337,10 @@ static if (_WIN32_IE >= 0x400) {
         UINT     cxIdeal;
         LPARAM   lParam;
         UINT     cxHeader;
+        static if (_WIN32_WINNT >= 0x600) {
+            RECT        rcChevronLocation;
+            UINT        uChevronState;
+        }
     }
 
     struct REBARBANDINFOW {
@@ -4332,6 +4364,10 @@ static if (_WIN32_IE >= 0x400) {
         UINT     cxIdeal;
         LPARAM   lParam;
         UINT     cxHeader;
+        static if (_WIN32_WINNT >= 0x600) {
+            RECT        rcChevronLocation;
+            UINT        uChevronState;
+        }
     }
 
     enum : size_t {
