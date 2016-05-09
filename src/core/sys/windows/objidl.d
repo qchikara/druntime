@@ -130,6 +130,7 @@ struct STATPROPSETSTG {
     FILETIME mtime;
     FILETIME ctime;
     FILETIME atime;
+    DWORD dwOSVersion; // see Microsoft.VisualStudio.OLE.Interop.STATPROPSETSTG
 }
 
 enum EXTCONN {
