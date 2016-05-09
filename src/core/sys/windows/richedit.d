@@ -387,7 +387,7 @@ struct CHARRANGE {
 }
 
 struct COMPCOLOR {
-align(4):
+//align(4):
     COLORREF crText;
     COLORREF crBackground;
     DWORD dwEffects;
@@ -405,14 +405,14 @@ align(4):
 }
 
 struct ENCORRECTTEXT {
-align(4):
+//align(4):
     NMHDR nmhdr;
     CHARRANGE chrg;
     WORD seltyp;
 }
 
 struct ENDROPFILES {
-align(4):
+//align(4):
     NMHDR nmhdr;
     HANDLE hDrop;
     LONG cp;
@@ -429,7 +429,7 @@ align(4):
 }
 
 struct ENOLEOPFAILED {
-align(4):
+//align(4):
     NMHDR nmhdr;
     LONG iob;
     LONG lOper;
@@ -447,7 +447,7 @@ align(4):
 alias ENPROTECTED* LPENPROTECTED;
 
 struct ENSAVECLIPBOARD {
-align(4):
+//align(4):
     NMHDR nmhdr;
     LONG cObjectCount;
     LONG cch;
@@ -539,7 +539,7 @@ struct PARAFORMAT2 {
 }
 
 struct SELCHANGE {
-align(4):
+//align(4):
     NMHDR nmhdr;
     CHARRANGE chrg;
     WORD seltyp;
@@ -558,7 +558,7 @@ struct TEXTRANGEW {
 }
 
 struct REQRESIZE {
-align(4):
+//align(4):
     NMHDR nmhdr;
     RECT rc;
 }
