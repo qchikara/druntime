@@ -2993,6 +2993,9 @@ struct NONCLIENTMETRICSA {
     LOGFONTA lfMenuFont;
     LOGFONTA lfStatusFont;
     LOGFONTA lfMessageFont;
+    static if (_WIN32_WINNT >= 0x0600) {
+        int iPaddedBorderWidth;
+    }
 }
 alias NONCLIENTMETRICSA* LPNONCLIENTMETRICSA;
 
@@ -3012,6 +3015,9 @@ struct NONCLIENTMETRICSW {
     LOGFONTW lfMenuFont;
     LOGFONTW lfStatusFont;
     LOGFONTW lfMessageFont;
+    static if (_WIN32_WINNT >= 0x0600) {
+        int iPaddedBorderWidth;
+    }
 }
 alias NONCLIENTMETRICSW* LPNONCLIENTMETRICSW;
 

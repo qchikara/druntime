@@ -14,6 +14,7 @@ version (ANSI) {} else version = Unicode;
 pragma(lib, "kernel32");
 
 private import core.sys.windows.basetsd, core.sys.windows.w32api, core.sys.windows.winbase, core.sys.windows.windef;
+private import core.sys.windows.basetyps;
 
 alias DWORD LCTYPE, CALTYPE, CALID, LGRPID, GEOID, GEOTYPE, GEOCLASS;
 
@@ -601,6 +602,10 @@ struct NLSVERSIONINFO {
     DWORD dwNLSVersionInfoSize;
     DWORD dwNLSVersion;
     DWORD dwDefinedVersion;
+    static if (_WIN32_WINNT >= 0x602) {
+        DWORD dwEffectiveId;
+        GUID  guidCustomVersion;
+    }
 }
 alias NLSVERSIONINFO* LPNLSVERSIONINFO;
 
