@@ -127,7 +127,7 @@ struct IMAGEHLP_MODULEA64
     CHAR[256]  ImageName;
     CHAR[256]  LoadedImageName;
     // new elements: 07-Jun-2002
-    version (none)
+    static if (_WIN32_WINNT >= 0x501)
     {
         CHAR[256]  LoadedPdbName;
         DWORD      CVSig;
@@ -142,10 +142,16 @@ struct IMAGEHLP_MODULEA64
         BOOL       TypeInfo;
     }
     // new elements: 17-Dec-2003
-    version (none)
+    static if (_WIN32_WINNT >= 0x501)
     {
         BOOL       SourceIndexed;
         BOOL       Publics;
+    }
+    // new element: 15-Jul-2009
+    static if (_WIN32_WINNT >= 0x601)
+    {
+        DWORD    MachineType;            // IMAGE_FILE_MACHINE_XXX from ntimage.h and winnt.h
+        DWORD    Reserved;               // Padding - don't remove.
     }
 }
 struct IMAGEHLP_MODULEW64
@@ -161,7 +167,7 @@ struct IMAGEHLP_MODULEW64
     WCHAR[256] ImageName;
     WCHAR[256] LoadedImageName;
     // new elements: 07-Jun-2002
-    version (none)
+    static if (_WIN32_WINNT >= 0x501)
     {
         WCHAR[256] LoadedPdbName;
         DWORD      CVSig;
@@ -176,10 +182,16 @@ struct IMAGEHLP_MODULEW64
         BOOL       TypeInfo;
     }
     // new elements: 17-Dec-2003
-    version (none)
+    static if (_WIN32_WINNT >= 0x501)
     {
         BOOL       SourceIndexed;
         BOOL       Publics;
+    }
+    // new element: 15-Jul-2009
+    static if (_WIN32_WINNT > 0x601)
+    {
+        DWORD    MachineType;            // IMAGE_FILE_MACHINE_XXX from ntimage.h and winnt.h
+        DWORD    Reserved;               // Padding - don't remove.
     }
 }
 
