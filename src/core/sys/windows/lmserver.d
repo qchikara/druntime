@@ -11,6 +11,7 @@ version (Windows):
 
 import core.sys.windows.winsvc;
 private import core.sys.windows.lmcons, core.sys.windows.windef;
+private import core.sys.windows.basetyps;
 
 struct SERVER_INFO_100 {
     DWORD  sv100_platform_id;
@@ -273,6 +274,24 @@ struct SERVER_INFO_598 {
     DWORD sv598_minpagedpoolchunksize;
     DWORD sv598_maxpagedpoolchunksize;
     BOOL  sv598_sendsfrompreferredprocessor;
+    //
+    DWORD sv598_cacheddirectorylimit;
+    DWORD sv598_maxcopylength;
+    BOOL  sv598_enablecompression;
+    BOOL  sv598_autosharewks;
+    BOOL  sv598_autoshareserver;
+    BOOL  sv598_enablesecuritysignature;
+    BOOL  sv598_requiresecuritysignature;
+    DWORD sv598_minclientbuffersize;
+    GUID  sv598_serverguid;
+    DWORD sv598_ConnectionNoSessionsTimeout;
+    DWORD sv598_IdleThreadTimeOut;
+    BOOL  sv598_enableW9xsecuritysignature;
+    BOOL  sv598_enforcekerberosreauthentication;
+    BOOL  sv598_disabledos;
+    DWORD sv598_lowdiskspaceminimum;
+    BOOL  sv598_disablestrictnamechecking;
+    BOOL  sv598_enableauthenticateusersharing;
 }
 alias SERVER_INFO_598* PSERVER_INFO_598, LPSERVER_INFO_598;
 

@@ -419,14 +419,31 @@ struct DISK_PARTITION_INFO {
 }
 alias DISK_PARTITION_INFO* PDISK_PARTITION_INFO;
 
-struct DISK_PERFORMANCE {
-    LARGE_INTEGER BytesRead;
-    LARGE_INTEGER BytesWritten;
-    LARGE_INTEGER ReadTime;
-    LARGE_INTEGER WriteTime;
-    DWORD         ReadCount;
-    DWORD         WriteCount;
-    DWORD         QueueDepth;
+version (all) { // probably windows 2000 or later
+    struct DISK_PERFORMANCE {
+      LARGE_INTEGER BytesRead;
+      LARGE_INTEGER BytesWritten;
+      LARGE_INTEGER ReadTime;
+      LARGE_INTEGER WriteTime;
+      LARGE_INTEGER IdleTime;
+      DWORD         ReadCount;
+      DWORD         WriteCount;
+      DWORD         QueueDepth;
+      DWORD         SplitCount;
+      LARGE_INTEGER QueryTime;
+      DWORD         StorageDeviceNumber;
+      WCHAR[8]      StorageManagerName;
+    }
+} else {
+    struct DISK_PERFORMANCE {
+        LARGE_INTEGER BytesRead;
+        LARGE_INTEGER BytesWritten;
+        LARGE_INTEGER ReadTime;
+        LARGE_INTEGER WriteTime;
+        DWORD         ReadCount;
+        DWORD         WriteCount;
+        DWORD         QueueDepth;
+    }
 }
 alias DISK_PERFORMANCE* PDISK_PERFORMANCE;
 
