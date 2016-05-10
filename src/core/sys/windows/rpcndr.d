@@ -172,14 +172,17 @@ struct MIDL_STUB_MESSAGE {
     uint BufferLength;
     uint MemorySize;
     ubyte *Memory;
-    int IsClient;
+    ubyte IsClient;
+    ubyte Pad;
+    ushort uFlags2;
     int ReuseBuffer;
     ubyte *AllocAllNodesMemory;
     ubyte *AllocAllNodesMemoryEnd;
     int IgnoreEmbeddedPointers;
     ubyte *PointerBufferMark;
-    ubyte fBufferValid;
-    ubyte Unused;
+    ubyte CorrDespIncrement;
+    ubyte uFlags;
+    ushort UniquePtrCount;
     ULONG_PTR MaxCount;
     uint Offset;
     uint ActualCount;
@@ -192,7 +195,8 @@ struct MIDL_STUB_MESSAGE {
 const(_MIDL_STUB_DESC)* StubDesc;
     _FULL_PTR_XLAT_TABLES *FullPtrXlatTables;
     uint FullPtrRefId;
-    int fCheckBounds;
+    //int fCheckBounds; // ?
+    uint PointerLength;
     // FIXME:
     byte bit_fields_for_D; // FIXME: Bitfields
 //  int fInDontFree :1;
@@ -210,7 +214,27 @@ const(_MIDL_STUB_DESC)* StubDesc;
     uint * SizePtrLengthArray;
     void* pArgQueue;
     uint dwStubPhase;
-    INT_PTR[5] w2kReserved;
+    void*  LowStackMark;
+    void*  pAsyncMsg;
+    void*  pCorrInfo;
+    UCHAR* pCorrMemory;
+    void*  pMemoryList;
+//#if (NTDDI_VERSION >= NTDDI_WIN2K )
+    INT_PTR pCSInfo;
+    UCHAR*  ConformanceMark;
+    UCHAR*  VarianceMark;
+    version(IA64) {
+        void* BackingStoreLowMark;
+    } else {
+        INT_PTR Unused;
+    }
+    void * pContext;
+    void * ContextHandleHash;
+    void * pUserMarshalList;
+    INT_PTR Reserved51_3;
+    INT_PTR Reserved51_4;
+    INT_PTR Reserved51_5;
+//#endif // (NTDDI_VERSION >= NTDDI_WIN2K )
 }
 alias MIDL_STUB_MESSAGE * PMIDL_STUB_MESSAGE;
 
