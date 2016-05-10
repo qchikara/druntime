@@ -14,6 +14,7 @@ pragma(lib, "advapi32");
 version (ANSI) {} else version = Unicode;
 
 private import core.sys.windows.w32api, core.sys.windows.winbase, core.sys.windows.windef;
+private import core.sys.windows.basetyps;
 
 /* FIXME:
  *  Types of some constants
@@ -712,6 +713,7 @@ struct CERT_CHAIN_ELEMENT {
     PCERT_REVOCATION_INFO pRevocationInfo;
     PCERT_ENHKEY_USAGE    pIssuanceUsage;
     PCERT_ENHKEY_USAGE    pApplicationUsage;
+    LPCWSTR               pwszExtendedErrorInfo;    // If NULL, none
 }
 alias CERT_CHAIN_ELEMENT* PCERT_CHAIN_ELEMENT;
 /* #endif */
@@ -787,6 +789,8 @@ struct CERT_CHAIN_CONTEXT {
     PCCERT_CHAIN_CONTEXT* rgpLowerQualityChainContext;
     BOOL                  fHasRevocationFreshnessTime;
     DWORD                 dwRevocationFreshnessTime;
+    DWORD                 dwCreateFlags;
+    GUID                  ChainId;
 }
 alias CERT_CHAIN_CONTEXT* PCERT_CHAIN_CONTEXT;
 /* #endif */

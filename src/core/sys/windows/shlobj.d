@@ -1028,6 +1028,7 @@ alias IShellIcon LPSHELLICON;
 
 struct SHELLFLAGSTATE {
     short _bf;
+    short _padding; // or _bf is DWORD
 /*
     BOOL fShowAllObjects : 1;
     BOOL fShowExtensions : 1;

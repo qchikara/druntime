@@ -296,6 +296,13 @@ struct LDAP {
     int      ld_errno;
     PCHAR    ld_matched;
     PCHAR    ld_error;
+
+    ULONG   ld_msgid;
+    UCHAR[(6*ULONG.sizeof)+1] Reserved3;
+    ULONG   ld_cldaptries;
+    ULONG   ld_cldaptimeout;
+    ULONG   ld_refhoplimit;
+    ULONG   ld_options;
 }
 alias LDAP* PLDAP;
 
@@ -307,6 +314,14 @@ struct LDAPMessage {
     LDAPMessage* lm_chain;
     LDAPMessage* lm_next;
     ULONG        lm_time;
+
+    PLDAP   Connection;
+    PVOID   Request;
+    ULONG   lm_returncode;
+    USHORT  lm_referral;
+    BOOLEAN lm_chased;
+    BOOLEAN lm_eom;
+    BOOLEAN ConnectionReferenced;
 }
 alias LDAPMessage* PLDAPMessage;
 
