@@ -74,8 +74,10 @@ enum MAPI_UNREAD            = 0x0001;
 enum MAPI_RECEIPT_REQUESTED = 0x0002;
 enum MAPI_SENT              = 0x0004;
 
-alias uint FLAGS, LHANDLE;
-alias uint* LPLHANDLE, LPULONG;
+alias uint FLAGS;
+alias uint* LPULONG;
+alias ULONG_PTR LHANDLE;
+alias ULONG_PTR* LPLHANDLE;
 
 struct MapiRecipDesc {
     ULONG  ulReserved;
@@ -123,7 +125,7 @@ struct MapiMessage {
 alias MapiMessage* lpMapiMessage;
 
 extern (Pascal) {
-    ULONG MAPILogon(ULONG, LPSTR, LPSTR, FLAGS, ULONG, LPLHANDLE);
+    ULONG MAPILogon(ULONG_PTR, LPSTR, LPSTR, FLAGS, ULONG, LPLHANDLE);
     ULONG MAPISendMail(LHANDLE, ULONG, lpMapiMessage, FLAGS, ULONG);
     ULONG MAPISendDocuments(ULONG, LPSTR, LPSTR, LPSTR, ULONG);
     ULONG MAPIReadMail(LHANDLE, ULONG, LPSTR, FLAGS, ULONG, lpMapiMessage*);
