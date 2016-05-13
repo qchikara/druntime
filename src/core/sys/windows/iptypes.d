@@ -69,8 +69,8 @@ struct IP_ADAPTER_INFO {
     BOOL             HaveWins;
     IP_ADDR_STRING   PrimaryWinsServer;
     IP_ADDR_STRING   SecondaryWinsServer;
-    time_t           LeaseObtained;
-    time_t           LeaseExpires;
+    time_t           LeaseObtained; // Is this 64-bit aware?
+    time_t           LeaseExpires;  // Is this 64-bit aware?
 }
 alias IP_ADAPTER_INFO* PIP_ADAPTER_INFO;
 
