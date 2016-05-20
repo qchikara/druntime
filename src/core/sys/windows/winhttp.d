@@ -146,7 +146,7 @@ struct WINHTTP_CONNECTION_INFO {
 align(4):
     DWORD cbSize;
     version (Win64)
-        DWORD _padding; // cheap trick without the alignment switch over this file 
+        DWORD _padding; // cheap trick without the alignment switch over this file
     SOCKADDR_STORAGE LocalAddress;
     SOCKADDR_STORAGE RemoteAddress;
 }
