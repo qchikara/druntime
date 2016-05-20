@@ -19,6 +19,7 @@ version (ANSI) {} else version = Unicode;
 */
 
 private import core.sys.windows.winbase, core.sys.windows.windef;
+private import core.sys.windows.dbghelp_types;
 
 // FIXME: check types of constants
 
@@ -165,6 +166,9 @@ enum ADDRESS_MODE {
     AddrModeFlat
 }
 
+version (Win64) {
+    alias ADDRESS64 ADDRESS;
+} else
 struct ADDRESS {
     DWORD        Offset;
     WORD         Segment;
@@ -172,6 +176,9 @@ struct ADDRESS {
 }
 alias ADDRESS* LPADDRESS;
 
+version (Win64) {
+    alias KDHELP64 KDHELP;
+} else
 struct KDHELP {
     DWORD Thread;
     DWORD ThCallbackStack;
@@ -188,6 +195,9 @@ struct KDHELP {
 }
 alias KDHELP* PKDHELP;
 
+version (Win64) {
+    alias STACKFRAME64 STACKFRAME;
+} else
 struct STACKFRAME {
     ADDRESS  AddrPC;
     ADDRESS  AddrReturn;
@@ -224,6 +234,9 @@ enum SYM_TYPE {
     SymSym
 }
 
+version (Win64) {
+    alias IMAGEHLP_SYMBOL64 IMAGEHLP_SYMBOL;
+} else
 struct IMAGEHLP_SYMBOL {
     DWORD   SizeOfStruct;
     DWORD   Address;
@@ -234,6 +247,9 @@ struct IMAGEHLP_SYMBOL {
 }
 alias IMAGEHLP_SYMBOL* PIMAGEHLP_SYMBOL;
 
+version (Win64) {
+    alias IMAGEHLP_MODULE64 IMAGEHLP_MODULE;
+} else
 struct IMAGEHLP_MODULE {
     DWORD     SizeOfStruct;
     DWORD     BaseOfImage;
@@ -248,6 +264,9 @@ struct IMAGEHLP_MODULE {
 }
 alias IMAGEHLP_MODULE* PIMAGEHLP_MODULE;
 
+version (Win64) {
+    alias IMAGEHLP_LINE64 IMAGEHLP_LINE;
+} else
 struct IMAGEHLP_LINE {
     DWORD SizeOfStruct;
     DWORD Key;
@@ -257,6 +276,38 @@ struct IMAGEHLP_LINE {
 }
 alias IMAGEHLP_LINE* PIMAGEHLP_LINE;
 
+version (Unicode) {} else {
+struct IMAGEHLP_DEFERRED_SYMBOL_LOAD64 { // for ANSI
+    DWORD    SizeOfStruct;           // set to sizeof(IMAGEHLP_DEFERRED_SYMBOL_LOAD64)
+    DWORD64  BaseOfImage;            // base load address of module
+    DWORD    CheckSum;               // checksum from the pe header
+    DWORD    TimeDateStamp;          // date/time stamp from pe header
+    CHAR[MAX_PATH]     FileName;     // symbols file or image name
+    BOOLEAN  Reparse;                // load failure reparse
+    HANDLE   hFile;                  // file handle, if passed
+    DWORD    Flags;                     //
+}
+alias IMAGEHLP_DEFERRED_SYMBOL_LOAD64* PIMAGEHLP_DEFERRED_SYMBOL_LOAD64;
+} // version (Unicode)
+
+struct IMAGEHLP_DEFERRED_SYMBOL_LOADW64 {
+    DWORD    SizeOfStruct;           // set to sizeof(IMAGEHLP_DEFERRED_SYMBOL_LOADW64)
+    DWORD64  BaseOfImage;            // base load address of module
+    DWORD    CheckSum;               // checksum from the pe header
+    DWORD    TimeDateStamp;          // date/time stamp from pe header
+    WCHAR[MAX_PATH + 1]    FileName; // symbols file or image name
+    BOOLEAN  Reparse;                // load failure reparse
+    HANDLE   hFile;                  // file handle, if passed
+    DWORD    Flags;         //
+}
+alias IMAGEHLP_DEFERRED_SYMBOL_LOADW64* PIMAGEHLP_DEFERRED_SYMBOL_LOADW64;
+
+version (Unicode)
+alias IMAGEHLP_DEFERRED_SYMBOL_LOADW64 IMAGEHLP_DEFERRED_SYMBOL_LOAD64;
+
+version (Win64) {
+    alias IMAGEHLP_DEFERRED_SYMBOL_LOAD64 IMAGEHLP_DEFERRED_SYMBOL_LOAD;
+} else {
 struct IMAGEHLP_DEFERRED_SYMBOL_LOAD {
     DWORD          SizeOfStruct;
     DWORD          BaseOfImage;
@@ -266,6 +317,7 @@ struct IMAGEHLP_DEFERRED_SYMBOL_LOAD {
     BOOLEAN        Reparse;
 }
 alias IMAGEHLP_DEFERRED_SYMBOL_LOAD* PIMAGEHLP_DEFERRED_SYMBOL_LOAD;
+}
 
 struct IMAGEHLP_DUPLICATE_SYMBOL {
     DWORD            SizeOfStruct;
