@@ -34,7 +34,7 @@ enum EMBDHLP_INPROC_SERVER  = 0x0001L;
 enum EMBDHLP_CREATENOW      = 0x00000000L;
 enum EMBDHLP_DELAYCREATE    = 0x00010000L;
 
-align(8):
+//align(8):
 struct OLESTREAM {
     LPOLESTREAMVTBL lpstbl;
 }

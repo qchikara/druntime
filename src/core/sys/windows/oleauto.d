@@ -14,7 +14,7 @@ import core.sys.windows.oaidl;
 private import core.sys.windows.basetyps, core.sys.windows.unknwn, core.sys.windows.windef, core.sys.windows.wtypes;
 private import core.sys.windows.winbase; // for SYSTEMTIME
 
-align(8):
+//align(8):
 enum STDOLE_MAJORVERNUM = 1;
 enum STDOLE_MINORVERNUM = 0;
 enum STDOLE_LCID = 0;

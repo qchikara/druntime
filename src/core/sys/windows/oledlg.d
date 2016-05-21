@@ -331,7 +331,7 @@ enum VPF_SELECTRELATIVE=1;
 enum VPF_DISABLERELATIVE=2;
 enum VPF_DISABLESCALE=4;
 
-align(8):
+//align(8):
 extern (Windows) {
     alias UINT function(HWND, UINT, WPARAM, LPARAM) LPFNOLEUIHOOK;
 }
